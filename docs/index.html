@@ -90,12 +90,12 @@
 
         <div class="scroll">
           <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">anaphoric</code> <var>tail</var>
-  (<code class="common-lisp library marker">when</code> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_mem_m.htm">member</a> 'b '(a b c d))
-    (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_car_c.htm">cdr</a> <var>tail</var>)))
+  (<code class="common-lisp library marker">when</code> (member 'b '(a b c d))
+    (cdr <var>tail</var>)))
 ==>
-(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm">LET</a> ((<var>TAIL</var> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_mem_m.htm">MEMBER</a> 'B '(A B C D))))
-  (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_declar.htm">DECLARE</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_ignore.htm">IGNORABLE</a> <var>TAIL</var>))
-  (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_when_.htm">WHEN</a> <var>TAIL</var> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_car_c.htm">CDR</a> <var>TAIL</var>)))
+(LET ((<var>TAIL</var> (MEMBER 'B '(A B C D))))
+  (DECLARE (IGNORABLE <var>TAIL</var>))
+  (WHEN <var>TAIL</var> (CDR <var>TAIL</var>)))
 => (C D)</code></pre>
         </div>
 
@@ -104,28 +104,28 @@
         <div class="scroll">
           <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">anaphoric</code> (<var>key</var> :type <var>type</var> :index <var>index</var>)
   (<code class="common-lisp library marker">etypecase</code> '(a b c)
-    (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/t_list.htm">list</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_list_.htm">list*</a> <var>index</var> <var>type</var> <var>key</var>))
-    (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/t_t.htm">t</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_list_.htm">list</a> <var>index</var> <code class="string">"Not a list."</code> <var>key</var>))))
+    (list (list* <var>index</var> <var>type</var> <var>key</var>))
+    (t (list <var>index</var> <code class="string">"Not a list."</code> <var>key</var>))))
 ==>
-(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm">LET</a> ((<var>KEY</var> '(A B C)))
-  (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_declar.htm">DECLARE</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_ignore.htm">IGNORABLE</a> <var>KEY</var>))
-  (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_tpcase.htm">ETYPECASE</a> <var>KEY</var>
-    (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/t_list.htm">LIST</a>
-     (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm">LET</a> ((<var>TYPE</var> 'LIST))
-       (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_declar.htm">DECLARE</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_ignore.htm">IGNORABLE</a> <var>TYPE</var>))
-       (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm">LET</a> ((<var>INDEX</var> 0))
-         (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_declar.htm">DECLARE</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_ignore.htm">IGNORABLE</a> <var>INDEX</var>))
-         (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_list_.htm">LIST*</a> <var>INDEX</var> <var>TYPE</var> <var>KEY</var>))))
-    (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/t_t.htm">T</a>
-     (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm">LET</a> ((<var>TYPE</var> 'T))
-       (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_declar.htm">DECLARE</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_ignore.htm">IGNORABLE</a> <var>TYPE</var>))
-       (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm">LET</a> ((<var>INDEX</var> 1))
-         (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_declar.htm">DECLARE</a> (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/d_ignore.htm">IGNORABLE</a> <var>INDEX</var>))
-         (<a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_list_.htm">LIST</a> <var>INDEX</var> "Not a list." <var>KEY</var>))))))
+(LET ((<var>KEY</var> '(A B C)))
+  (DECLARE (IGNORABLE <var>KEY</var>))
+  (ETYPECASE <var>KEY</var>
+    (LIST
+     (LET ((<var>TYPE</var> 'LIST))
+       (DECLARE (IGNORABLE <var>TYPE</var>))
+       (LET ((<var>INDEX</var> 0))
+         (DECLARE (IGNORABLE <var>INDEX</var>))
+         (LIST* <var>INDEX</var> <var>TYPE</var> <var>KEY</var>))))
+    (T
+     (LET ((<var>TYPE</var> 'T))
+       (DECLARE (IGNORABLE <var>TYPE</var>))
+       (LET ((<var>INDEX</var> 1))
+         (DECLARE (IGNORABLE <var>INDEX</var>))
+         (LIST <var>INDEX</var> "Not a list." <var>KEY</var>))))))
 => (0 LIST A B C)</code></pre>
         </div>
 
-        <p><b>To use <cite class="common-lisp library">anaphoric-variants</cite>, simply <code class="common-lisp">(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_defpkg.htm">:import-from</a> #:anaphoric-variants #:anaphoric)</code>. Don't <code class="common-lisp">(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_defpkg.htm">:use</a>)</code>!</b></p>
+        <p><b>To use <cite class="common-lisp library">anaphoric-variants</cite>, simply <code class="common-lisp">(:import-from #:anaphoric-variants #:anaphoric)</code>. Don't <code class="common-lisp">(:use)</code>!</b></p>
 
         <p>Currently supported anaphoric variants:</p>
         <ul>
