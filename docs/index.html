@@ -85,7 +85,7 @@
 
       <section id="introduction">
 
-        <p><cite class="common-lisp library">anaphoric-variants</cite> gives access to anaphoric variants of operators through one macro: <code class="common-lisp library macro operator">anaphoric</code>. The user explicitly provides a variable name, preserving sanity, in contrast to the traditional use of an evil implicit variable (<var>it</var>). Some operators can bind additional handy variables when explicitly requested.</p>
+        <p><cite class="relevant">anaphoric-variants</cite> gives access to anaphoric variants of operators through one macro: <code class="relevant">anaphoric</code>. The user explicitly provides a variable name, preserving sanity, in contrast to the traditional use of an evil implicit variable (<var>it</var>). Some operators can bind additional handy variables when explicitly requested.</p>
 
       </section>
 
@@ -94,8 +94,8 @@
         <p>Here's a trivial example:</p>
 
         <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">anaphoric</code> <var>tail</var>
-  (<code class="common-lisp library marker">when</code> (member 'b '(a b c d))
+          <pre class="example"><code class="common-lisp">(<code class="relevant">anaphoric</code> <var>tail</var>
+  (<code class="relevant marker">when</code> (member 'b '(a b c d))
     (cdr <var>tail</var>)))
 ==>
 (LET ((<var>TAIL</var> (MEMBER 'B '(A B C D))))
@@ -107,8 +107,8 @@
         <p>And here's a bit more interesting one:</p>
 
         <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">anaphoric</code> (<var>key</var> :type <var>type</var> :index <var>index</var>)
-  (<code class="common-lisp library marker">etypecase</code> '(a b c)
+          <pre class="example"><code class="common-lisp">(<code class="relevant">anaphoric</code> (<var>key</var> :type <var>type</var> :index <var>index</var>)
+  (<code class="relevant marker">etypecase</code> '(a b c)
     (list (list* <var>index</var> <var>type</var> <var>key</var>))
     (t (list <var>index</var> <code class="string">"Not a list."</code> <var>key</var>))))
 ==>
@@ -130,23 +130,23 @@
 => (0 LIST A B C)</code></pre>
         </div>
 
-        <p><b>To use <cite class="common-lisp library">anaphoric-variants</cite>, simply <code class="common-lisp">(:import-from #:anaphoric-variants #:anaphoric)</code>. Don't <code class="common-lisp">(:use)</code>!</b></p>
+        <p><b>To use <cite class="relevant">anaphoric-variants</cite>, simply <code class="common-lisp">(:import-from #:anaphoric-variants #:anaphoric)</code>. Don't <code class="common-lisp">(:use)</code>!</b></p>
 
         <p>Currently supported anaphoric variants:</p>
         <ul>
-          <li><code class="common-lisp library marker">and</code></li>
-          <li><code class="common-lisp library marker">or</code></li>
-          <li><code class="common-lisp library marker">cond</code></li>
-          <li><code class="common-lisp library marker">if</code></li>
-          <li><code class="common-lisp library marker">when</code></li>
-          <li><code class="common-lisp library marker">unless</code></li>
-          <li><code class="common-lisp library marker">prog1</code></li>
-          <li><code class="common-lisp library marker">case</code></li>
-          <li><code class="common-lisp library marker">ccase</code></li>
-          <li><code class="common-lisp library marker">ecase</code></li>
-          <li><code class="common-lisp library marker">typecase</code></li>
-          <li><code class="common-lisp library marker">ctypecase</code></li>
-          <li><code class="common-lisp library marker">etypecase</code></li>
+          <li><code class="relevant marker">and</code></li>
+          <li><code class="relevant marker">or</code></li>
+          <li><code class="relevant marker">cond</code></li>
+          <li><code class="relevant marker">if</code></li>
+          <li><code class="relevant marker">when</code></li>
+          <li><code class="relevant marker">unless</code></li>
+          <li><code class="relevant marker">prog1</code></li>
+          <li><code class="relevant marker">case</code></li>
+          <li><code class="relevant marker">ccase</code></li>
+          <li><code class="relevant marker">ecase</code></li>
+          <li><code class="relevant marker">typecase</code></li>
+          <li><code class="relevant marker">ctypecase</code></li>
+          <li><code class="relevant marker">etypecase</code></li>
         </ul>
 
       <p>It's also possible to make your own variants. Check <a href="https://github.com/Hexstream/anaphoric-variants/blob/master/definitions.lisp">definitions.lisp</a> in particular for inspiration.
