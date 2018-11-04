@@ -31,13 +31,13 @@
               forms :from-end t)
       (list operator)))
 
-(define and (var) (&rest forms)
+(define (anaphoric and) (var) (&rest forms)
   (%recursively 'and var forms))
 
-(define or (var) (&rest forms)
+(define (anaphoric or) (var) (&rest forms)
   (%recursively 'or var forms))
 
-(define cond (test-var &key index) (&body clauses)
+(define (anaphoric cond) (test-var &key index) (&body clauses)
   (funcall (%maybe-wrapper test-var
                            (lambda (main)
                              `(let ((,test-var nil))
@@ -54,26 +54,26 @@
                      `(,(funcall update-wrapper condition)
                         ,@(funcall index-wrapper then))))))))
 
-(define if (var) (condition then &optional (else nil elsep))
+(define (anaphoric if) (var) (condition then &optional (else nil elsep))
   (%maybe-binding var condition
                   (lambda (value)
                     `(if ,value
                          ,then
                          ,@(when elsep (list else))))))
 
-(define when (var) (condition &body forms)
+(define (anaphoric when) (var) (condition &body forms)
   (%maybe-binding var condition
                   (lambda (value)
                     `(when ,value
                        ,@forms))))
 
-(define unless (var) (condition &body forms)
+(define (anaphoric unless) (var) (condition &body forms)
   (%maybe-binding var condition
                   (lambda (value)
                     `(unless ,value
                        ,@forms))))
 
-(define prog1 (var) (result &body body)
+(define (anaphoric prog1) (var) (result &body body)
   (%maybe-binding var result
                   (lambda (value)
                     `(prog1 ,value
@@ -120,21 +120,21 @@
                       (funcall transform (first case) (rest case))))))))
 
 
-(define case (key &key keys index listify-keys-p) (keyform &body cases)
+(define (anaphoric case) (key &key keys index listify-keys-p) (keyform &body cases)
   (%caselike 'case key keys listify-keys-p index keyform cases))
 
-(define ccase (key &key keys index listify-keys-p) (keyplace &body cases)
+(define (anaphoric ccase) (key &key keys index listify-keys-p) (keyplace &body cases)
   (%caselike 'ccase key keys listify-keys-p index keyplace cases))
 
-(define ecase (key &key keys index listify-keys-p) (keyform &body cases)
+(define (anaphoric ecase) (key &key keys index listify-keys-p) (keyform &body cases)
   (%caselike 'ecase key keys listify-keys-p index keyform cases))
 
 
-(define typecase (key &key type index) (keyform &body cases)
+(define (anaphoric typecase) (key &key type index) (keyform &body cases)
   (%caselike 'typecase key type nil index keyform cases))
 
-(define ctypecase (key &key type index) (keyplace &body cases)
+(define (anaphoric ctypecase) (key &key type index) (keyplace &body cases)
   (%caselike 'ctypecase key type nil index keyplace cases))
 
-(define etypecase (key &key type index) (keyform &body cases)
+(define (anaphoric etypecase) (key &key type index) (keyform &body cases)
   (%caselike 'etypecase key type nil index keyform cases))
