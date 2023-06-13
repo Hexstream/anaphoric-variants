@@ -48,11 +48,11 @@
                                     `(setf ,test-var ,condition))))
                  (index-wrapper (%maybe-index-wrapper index)))
              `(cond
-                ,@(map-bind
-                   (mapcar) ((clause clauses))
-                   (destructuring-bind (condition &body then) clause
-                     `(,(funcall update-wrapper condition)
-                        ,@(funcall index-wrapper then))))))))
+                ,@(mapcar (lambda (clause)
+                            (destructuring-bind (condition &body then) clause
+                              `(,(funcall update-wrapper condition)
+                                ,@(funcall index-wrapper then))))
+                          clauses)))))
 
 (define (anaphoric if) (var) (condition then &optional (else nil elsep))
   (%maybe-binding var condition
@@ -115,9 +115,9 @@
                transform)))
      (lambda (value)
        `(,operator ,value
-                   ,@(map-bind
-                      (mapcar) ((case cases))
-                      (funcall transform (first case) (rest case))))))))
+                   ,@(mapcar (lambda (case)
+                               (funcall transform (first case) (rest case)))
+                             cases))))))
 
 
 (define (anaphoric case) (key &key keys index listify-keys-p) (keyform &body cases)
